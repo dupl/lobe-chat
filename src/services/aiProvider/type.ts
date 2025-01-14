@@ -1,5 +1,5 @@
 import {
-  AiProviderInitState,
+  AiProviderRuntimeState,
   AiProviderSortMap,
   CreateAiProviderParams,
   UpdateAiProviderConfigParams,
@@ -14,7 +14,7 @@ export interface IAiProviderService {
 
   getAiProviderList: () => Promise<any>;
 
-  getAiProviderRuntimeState: () => Promise<AiProviderInitState>;
+  getAiProviderRuntimeState: () => Promise<AiProviderRuntimeState>;
 
   toggleProviderEnabled: (id: string, enabled: boolean) => Promise<any>;
 
