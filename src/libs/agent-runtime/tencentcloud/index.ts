@@ -3,41 +3,28 @@ import { LobeOpenAICompatibleFactory } from '../utils/openaiCompatibleFactory';
 
 import type { ChatModelCard } from '@/types/llm';
 
-export interface StepfunModelCard {
+export interface TencentCloudModelCard {
   id: string;
 }
 
-export const LobeStepfunAI = LobeOpenAICompatibleFactory({
-  baseURL: 'https://api.stepfun.com/v1',
-  chatCompletion: {
-    handlePayload: (payload) => {
-      return {
-        ...payload,
-        stream: !payload.tools,
-      } as any;
-    },
-  },
+export const LobeTencentCloudAI = LobeOpenAICompatibleFactory({
+  baseURL: 'https://api.lkeap.cloud.tencent.com/v1',
   debug: {
-    chatCompletion: () => process.env.DEBUG_STEPFUN_CHAT_COMPLETION === '1',
+    chatCompletion: () => process.env.DEBUG_TENCENT_CLOUD_CHAT_COMPLETION === '1',
   },
   models: async ({ client }) => {
     const { LOBE_DEFAULT_MODEL_LIST } = await import('@/config/aiModels');
 
-    // ref: https://platform.stepfun.com/docs/llm/modeloverview
     const functionCallKeywords = [
-      'step-1-',
-      'step-1o-',
-      'step-1v-',
-      'step-2-',
+      'deepseek-v3',
     ];
 
-    const visionKeywords = [
-      'step-1o-',
-      'step-1v-',
+    const reasoningKeywords = [
+      'deepseek-r1',
     ];
 
     const modelsPage = await client.models.list() as any;
-    const modelList: StepfunModelCard[] = modelsPage.data;
+    const modelList: TencentCloudModelCard[] = modelsPage.data;
 
     return modelList
       .map((model) => {
@@ -53,15 +40,15 @@ export const LobeStepfunAI = LobeOpenAICompatibleFactory({
             || false,
           id: model.id,
           reasoning:
-            knownModel?.abilities?.reasoning
+            reasoningKeywords.some(keyword => model.id.toLowerCase().includes(keyword))
+            || knownModel?.abilities?.reasoning
             || false,
           vision:
-            visionKeywords.some(keyword => model.id.toLowerCase().includes(keyword))
-            || knownModel?.abilities?.vision
+            knownModel?.abilities?.vision
             || false,
         };
       })
       .filter(Boolean) as ChatModelCard[];
   },
-  provider: ModelProvider.Stepfun,
+  provider: ModelProvider.TencentCloud,
 });

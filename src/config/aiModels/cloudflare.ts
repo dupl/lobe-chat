@@ -3,7 +3,7 @@ import { AIChatModelCard } from '@/types/aiModel';
 const cloudflareChatModels: AIChatModelCard[] = [
   {
     contextWindowTokens: 16_384,
-    displayName: 'DeepSeek R1 Distill Qwen 32B',
+    displayName: 'DeepSeek R1 (Distill Qwen 32B)',
     enabled: true,
     id: '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b',
     type: 'chat',
@@ -23,6 +23,7 @@ const cloudflareChatModels: AIChatModelCard[] = [
   {
     contextWindowTokens: 131_072,
     displayName: 'llama 3.3 70b',
+    enabled: true,
     id: '@cf/meta/llama-3.3-70b-instruct-fp8-fast',
     type: 'chat',
   },

@@ -89,6 +89,7 @@ const githubChatModels: AIChatModelCard[] = [
     },
     contextWindowTokens: 128_000,
     displayName: 'DeepSeek R1',
+    enabled: true,
     id: 'DeepSeek-R1',
     maxOutput: 4096,
     type: 'chat',
